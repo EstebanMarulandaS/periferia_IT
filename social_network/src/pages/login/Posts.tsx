@@ -6,10 +6,15 @@ type Post = {
   id: number;
   title: string;
   content: string;
+  createdAt: string;
+  authorId: string;
 };
 
 export default function Posts() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleString();
+  };
 
   const fetchPosts = useCallback(async () => {
     const res = await apiPosts.get("/posts");
@@ -30,7 +35,13 @@ export default function Posts() {
           <div className="card mb-3" key={post.id}>
             <div className="card-body">
               <h5 className="mb-1">{post.title}</h5>
-              <p className="mb-1">{post.content}</p>
+
+              <small className="text-muted">
+                Publicado el {formatDate(post.createdAt)}
+              </small>
+
+              <p className="mt-2 mb-0">{post.content}</p>
+              <p className="mt-2 mb-0">Publicado por: {post.authorId}</p>
             </div>
           </div>
         ))}
