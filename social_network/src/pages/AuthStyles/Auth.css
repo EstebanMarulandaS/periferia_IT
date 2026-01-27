@@ -1,0 +1,144 @@
+.login-page,
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Imagen + overlay */
+  background:
+    linear-gradient(120deg, rgba(0, 0, 0, 0.75), rgba(213, 108, 9, 0.6)),
+    url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Animación suave del fondo */
+  animation: bgMove 20s ease-in-out infinite alternate;
+}
+
+/* Movimiento sutil del fondo */
+@keyframes bgMove {
+  0% {
+    background-position: center;
+  }
+  100% {
+    background-position: top;
+  }
+}
+
+/* =========================
+   TARJETAS (Login / Register)
+   ========================= */
+.login-card,
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 2rem;
+  animation: cardEnter 0.8s ease forwards;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card .form-control,
+.register-card .form-control {
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.login-card .form-control:focus,
+.register-card .form-control:focus {
+  border-color: #d56c09;
+  box-shadow: 0 0 0 0.15rem rgba(213, 108, 9, 0.25);
+  outline: none;
+}
+
+.login-card .btn-primary,
+.register-card .btn-primary {
+  border-radius: 999px;
+  padding: 0.75rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #d56c09, #ff8c1a);
+  border: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.login-card .btn-primary:hover,
+.register-card .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(213, 108, 9, 0.35);
+}
+
+.login-link,
+.register-link,
+.forgot-link {
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.login-link,
+.register-link {
+  color: #d56c09;
+}
+
+.forgot-link {
+  color: #ff6a00;
+}
+
+.login-link:hover,
+.register-link:hover,
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.alert {
+  border-radius: 10px;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+}
+
+.social-login {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.social-btn {
+  flex: 1;
+  border: none;
+  height: 48px;
+  border-radius: 24px;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.social-btn.apple {
+  background: black;
+}
+.social-btn.facebook {
+  background: #4e73df;
+}
+.social-btn.spotify {
+  background: #1db954;
+}
+.social-btn.google {
+  background: #f1f1f1;
+  color: #333;
+}
