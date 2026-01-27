@@ -1,6 +1,6 @@
 # Social Network – Frontend
 
-Este repositorio contiene el **frontend** de una aplicación tipo red social, desarrollado como parte de una prueba técnica.
+Este repositorio contiene el **frontend** y **backend** de una aplicación tipo red social, desarrollado como parte de una prueba técnica.
 
 El proyecto está construido con **React + TypeScript** y se comunica con servicios backend independientes para autenticación y publicaciones.
 
