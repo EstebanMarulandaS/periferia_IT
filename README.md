@@ -8,7 +8,7 @@ El proyecto está construido con **React + TypeScript** y se comunica con servic
 
 ## Tecnologías – Frontend
 
-- React 18  
+- React 19  
 - TypeScript  
 - Vite  
 - Axios  
