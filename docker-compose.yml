@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: social_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - app_net
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    container_name: auth_service
+    env_file: .env
+    environment:
+      PORT: ${AUTH_PORT}
+      SERVICE_NAME: auth-service
+      DATABASE_URL: ${AUTH_DATABASE_URL}
+    ports:
+      - "${AUTH_PORT}:${AUTH_PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./services/auth-service/logs:/app/services/auth-service/logs
+    command: ["sh", "-lc", "./docker-entry-migrate.sh"]
+    networks:
+      - app_net
+
+  posts-service:
+    build:
+      context: .
+      dockerfile: services/posts-service/Dockerfile
+    container_name: posts_service
+    env_file: .env
+    environment:
+      PORT: ${POSTS_PORT}
+      SERVICE_NAME: posts-service
+      DATABASE_URL: ${POSTS_DATABASE_URL}
+    ports:
+      - "${POSTS_PORT}:${POSTS_PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+    volumes:
+      - ./services/posts-service/logs:/app/services/posts-service/logs
+    command: ["sh", "-lc", "./docker-entry-migrate.sh"]
+    networks:
+      - app_net
+
+volumes:
+  pgdata:
+
+networks:
+  app_net:
+    driver: bridge
