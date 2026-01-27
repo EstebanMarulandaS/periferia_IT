@@ -25,13 +25,16 @@ export default function Register() {
     setError("");
 
     try {
-      const response = await apiAuth.post("/auth/register", {
+      await apiAuth.post("/auth/register", {
         username,
         name,
         password: password,
       });
 
-      login(response.data.token);
+      login({
+        username: username,
+        password: password,
+      });
       navigate("/posts");
     } catch {
       setError("No fue posible crear el usuario");
@@ -60,7 +63,7 @@ export default function Register() {
           <div className="mb-3">
             <input
               className="form-control form-control-lg"
-              placeholder="Email"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
