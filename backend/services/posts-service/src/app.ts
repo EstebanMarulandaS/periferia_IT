@@ -25,8 +25,8 @@ export function buildApp() {
 
   const spec = buildSwaggerSpec(serviceName, port);
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(spec));
-
-  // Routes
+  
+  // Routes 
   app.use(buildRoutes());
 
   app.use(errorHandlerMiddleware(logger));

@@ -1,7 +1,7 @@
 import { prisma } from "../db/prisma.js";
 
 export type CreatePostInput = { title: string; content: string };
-export type UpdatePostInput = { title?: string; content?: string };
+export type UpdatePostInput = { postId: string; userId: string; data: { title?: string; content?: string } };
 
 export async function createPost(authorId: string, input: CreatePostInput) {
   return prisma.post.create({
@@ -46,6 +46,13 @@ export async function getPostById(id: string) {
       createdAt: true,
       updatedAt: true
     }
+  });
+}
+
+export async function updatePost(input: UpdatePostInput) {
+  return prisma.post.update({
+    where: { id: input.postId },
+    data: input.data
   });
 }
 

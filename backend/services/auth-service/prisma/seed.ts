@@ -1,7 +1,5 @@
 import { prisma } from "../src/db/prisma.js";
 
-const BCRYPT_ROUNDS = Number(process.env.BCRYPT_ROUNDS ?? "10");
-
 async function main() {
   const users = [
     { username: "cristian", name: "Cristian Camilo", password: "secret12" },

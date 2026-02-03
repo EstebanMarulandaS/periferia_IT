@@ -9,10 +9,10 @@ export function buildRoutes() {
   // public
   router.use(healthRouter);
 
-  // protected sample route (already protected internally)
+  // protected route to test.
   router.use(protectedRouter);
 
-  // posts (ping public, rest protected in router)
+  // posts routes.
   router.use(postsRouter);
 
   return router;

@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiPosts } from "../../api/api";
 
 type Props = {
   onPostCreated: () => void;
+  editingPost: {
+    id: number;
+    title: string;
+    content: string;
+  } | null;
+  clearEditing: () => void;
+  deletePost?: {
+    id: number;
+    title: string;
+    content: string;
+  } | null;
 };
 
-export default function CreatePost({ onPostCreated }: Props) {
+export default function CreatePost({
+  onPostCreated,
+  editingPost,
+  clearEditing,
+}: Props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,10 +31,20 @@ export default function CreatePost({ onPostCreated }: Props) {
     try {
       setLoading(true);
 
-      await apiPosts.post("/posts", {
-        title,
-        content,
-      });
+      if (editingPost) {
+        // EDITAR
+        await apiPosts.put(`/posts/${editingPost.id}`, {
+          title,
+          content,
+        });
+        clearEditing();
+      } else {
+        // CREAR
+        await apiPosts.post("/posts", {
+          title,
+          content,
+        });
+      }
 
       setTitle("");
       setContent("");
@@ -28,6 +53,13 @@ export default function CreatePost({ onPostCreated }: Props) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (editingPost) {
+      setTitle(editingPost.title);
+      setContent(editingPost.content);
+    }
+  }, [editingPost]);
 
   return (
     <div className="card mb-3">
@@ -51,7 +83,11 @@ export default function CreatePost({ onPostCreated }: Props) {
           onClick={handleSubmit}
           disabled={loading || !title.trim() || !content.trim()}
         >
-          {loading ? "Publicando..." : "Publicar"}
+          {editingPost
+            ? "Actualizar post"
+            : !title.trim() && !content.trim()
+              ? "Crear post"
+              : "Crear post"}
         </button>
       </div>
     </div>
