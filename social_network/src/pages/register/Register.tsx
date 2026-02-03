@@ -2,8 +2,7 @@ import { useState } from "react";
 import { apiAuth } from "../../api/api";
 import { useAuth } from "../../auth/useAuth";
 import { Link, useNavigate } from "react-router-dom";
-// import { hashPassword } from "../../utils/hashPassword";
-// import { USE_AUTH_BYPASS } from "../../config/env";
+import { hashPassword } from "../../utils/hashPassword";
 import "../AuthStyles/Auth.css";
 
 export default function Register() {
@@ -28,7 +27,7 @@ export default function Register() {
       await apiAuth.post("/auth/register", {
         username,
         name,
-        password: password,
+        password: hashPassword(password),
       });
 
       login({

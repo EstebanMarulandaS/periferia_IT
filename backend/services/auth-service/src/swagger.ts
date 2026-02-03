@@ -12,7 +12,6 @@ export function buildSwaggerSpec(serviceName: string, port: number) {
         { url: `http://localhost:${port}` }
       ]
     },
-    // swagger-jsdoc will parse JSDoc comments from these files
     apis: ["./src/routes/*.ts"]
   };
 

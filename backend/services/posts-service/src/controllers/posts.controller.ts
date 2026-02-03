@@ -4,12 +4,18 @@ import {
   createPost,
   deletePostOwned,
   getPostById,
-  listPosts
+  listPosts,
+  updatePost
 } from "../services/posts.service.js";
 
 const createSchema = z.object({
   title: z.string().min(1).max(120),
   content: z.string().min(1).max(10_000)
+});
+
+const updateSchema = z.object({
+  title: z.string().min(1).max(120).optional(),
+  content: z.string().min(1).max(10_000).optional()
 });
 
 function authUserId(req: Request) {
@@ -53,4 +59,21 @@ export async function remove(req: Request, res: Response) {
   if (!ok) return res.status(404).json({ error: "Post not found or not owned", requestId });
 
   return res.status(200).json({ ok: true, requestId });
+}
+
+export async function update(req: Request, res: Response) {
+  const requestId = (req as any).requestId;
+  const userId = authUserId(req);
+  if (!userId) return res.status(401).json({ error: "Unauthorized", requestId });   
+
+  const parsed = updateSchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: "Bad Request", details: parsed.error.flatten(), requestId });
+
+  const post = await getPostById(req.params.id);
+  if (!post || post.authorId !== userId) {
+    return res.status(404).json({ error: "Post not found or not owned", requestId });
+  }
+
+  const updatedPost = await updatePost({ postId: post.id, userId, data: parsed.data });
+  return res.status(200).json({ ok: true, post: updatedPost, requestId });
 }

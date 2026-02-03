@@ -23,4 +23,4 @@ RUN npx prisma generate
 
 
 EXPOSE 3001
-CMD ["sh", "-lc", "./docker-entry-migrate.sh"]
+CMD ["sh", "/app/services/auth-service/docker-entry-migrate.sh"]

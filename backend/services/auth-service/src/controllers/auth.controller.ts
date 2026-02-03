@@ -23,9 +23,7 @@ function badRequest(res: Response, requestId: string | undefined, details: unkno
 // Callback function to response a different message based on the error.
 function fail(res: Response, err: any, requestId: string | undefined) {
   const status = typeof err?.statusCode === "number" ? err.statusCode : 500;
-
   const message = status === 500 ? "Internal Server Error" : (err?.message ?? "Error");
-
   return res.status(status).json({ error: message, requestId });
 }
 

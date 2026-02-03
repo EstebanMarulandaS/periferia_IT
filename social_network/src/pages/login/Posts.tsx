@@ -12,6 +12,8 @@ type Post = {
 
 export default function Posts() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+
   const formatDate = (date: string) => {
     return new Date(date).toLocaleString();
   };
@@ -21,6 +23,15 @@ export default function Posts() {
     setPosts(res.data.posts);
   }, []);
 
+  const handleDeletePost = async (postId: number) => {
+    try {
+      await apiPosts.delete(`/posts/${postId}`);
+      fetchPosts();
+    } catch (error) {
+      console.error("Error eliminando el post", error);
+    }
+  };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPosts();
@@ -29,7 +40,11 @@ export default function Posts() {
   return (
     <div className="container mt-4">
       <div className="col-12 col-md-8 mx-auto">
-        <CreatePost onPostCreated={fetchPosts} />
+        <CreatePost
+          onPostCreated={fetchPosts}
+          editingPost={editingPost}
+          clearEditing={() => setEditingPost(null)}
+        />
 
         {posts.map((post) => (
           <div className="card mb-3" key={post.id}>
@@ -42,6 +57,19 @@ export default function Posts() {
 
               <p className="mt-2 mb-0">{post.content}</p>
               <p className="mt-2 mb-0">Publicado por: {post.authorId}</p>
+
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => setEditingPost(post)}
+              >
+                Editar
+              </button>
+              <button
+                className="btn btn-danger btn-sm mr-5 ml-5"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                Borrar
+              </button>
             </div>
           </div>
         ))}

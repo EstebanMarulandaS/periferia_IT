@@ -101,3 +101,31 @@ postsRouter.post("/posts", requireAuth, postsController.create);
  *         description: Not Found
  */
 postsRouter.delete("/posts/:id", requireAuth, postsController.remove);
+
+/**
+ * @openapi
+ * /posts:
+ *   /posts/:id:
+ *     summary: Update an specific post (requires JWT)
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [title, content]
+ *             properties:
+ *               title:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       401:
+ *         description: Unauthorized
+ */
+postsRouter.put("/posts/:id", requireAuth, postsController.update);

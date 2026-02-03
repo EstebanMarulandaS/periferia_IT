@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import type { Secret, SignOptions } from "jsonwebtoken";
 import { prisma } from "../db/prisma.js";
 
-const JWT_SECRET: Secret = process.env.JWT_SECRET ?? "dev_secret_change_me";
+const JWT_SECRET: Secret = process.env.JWT_SECRET ?? "secret_key_social_network";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? "1h";
 const JWT_SIGN_OPTIONS: SignOptions = { expiresIn: JWT_EXPIRES_IN as any };
 const BCRYPT_ROUNDS = Number(process.env.BCRYPT_ROUNDS ?? "10");
